@@ -1,0 +1,14 @@
+# Ignored files and directories
+node_modules/
+dist/
+build/
+
+# Ignored files
+*.log
+*.tmp
+*.bak
+*.swp
+
+# Ignored system files
+.DS_Store
+Thumbs.db
