@@ -4,11 +4,11 @@ const { Student, Career, Role } = require('../../models/models');
 router.get('/', async (req, res) => {
     try {
         let {page = 0, limit = 10} = req.query;
-        const [pageAsNumber, sizeAsNumber] = [Number.parseInt(page), Number.parseInt(size)];
+        const [pageAsNumber, sizeAsNumber] = [Number.parseInt(page), Number.parseInt(limit)];
 
         options = {
             limit: sizeAsNumber,
-            
+            offset: pageAsNumber * sizeAsNumber,
             include: [
                 {
                     model: Career,
@@ -32,15 +32,17 @@ router.get('/', async (req, res) => {
                 }
             ]
         });
-        res.json(students);
+        res.status(200).json(students);
     } catch (error) {
+        console.log(error);
         res.status(500).json({ error });
     }
 });
 
 router.get('/:documentNumber', async (req, res) => {
     try {
-        const student = await Student.findByPk(req.params.documentNumber, {
+        const documentNumber = (req.params.documentNumber);
+        const student = await Student.findByPk(documentNumber, {
             include: [
                 {
                     model: Career,
@@ -52,25 +54,26 @@ router.get('/:documentNumber', async (req, res) => {
                 }
             ]
         });
-        res.json(student);
+        res.status(200).json(student);
     } catch (error) {
+        console.log(error)
         res.status(500).json({ error });
     }
 });
 
 router.post('/', async (req, res) => {
     try {
-        const { documentNumber, name, lastName, email, birthdate, numberPhone, address } = req.body;
+        const { documentNumber, name, lastname, email, birthdate, numberPhone, address } = req.body;
         const student = await Student.create({
             documentNumber,
             name,
-            lastName,
+            lastname,
             email,
             birthdate,
             numberPhone,
             address
         });
-        res.json(student);
+        res.status(200).json(student);
     } catch (error) {
         res.status(500).json({ error });
     }
@@ -85,10 +88,10 @@ router.put('/:documentNumber', async (req, res) => {
             res.status(404).json({ error: 'Student not found' });
         }
 
-        const { documentNumber, name, lastName, email, birthdate, numberPhone, address } = req.body;
+        const { documentNumber, name, lastname, email, birthdate, numberPhone, address } = req.body;
         const student = await Student.update({
             name,
-            lastName,
+            lastname,
             email,
             birthdate,
             numberPhone,

@@ -3,7 +3,7 @@ const { sequelize } = require('../config/connection');
 
 const Student = sequelize.define('Student', {
     documentNumber: {
-        type: DataTypes.BIGINT,
+        type: DataTypes.STRING,
         primaryKey: true,
         allowNull: false
     },
