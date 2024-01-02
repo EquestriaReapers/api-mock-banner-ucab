@@ -1,9 +1,9 @@
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('./connection');
+const { sequelize } = require('../config/connection');
 
 const Student = sequelize.define('Student', {
     documentNumber: {
-        type: DataTypes.NUMBER,
+        type: DataTypes.BIGINT,
         primaryKey: true,
         allowNull: false
     },
@@ -33,7 +33,7 @@ const Student = sequelize.define('Student', {
     },
     address: {
         type: DataTypes.STRING,
-        allowNull: true
+        allowNull: false
     },
     createdAt: {
         type: DataTypes.DATE,
@@ -116,8 +116,6 @@ Student.belongsToMany(Career, { through: StudentCareer });
 Career.belongsToMany(Student, { through: StudentCareer });
 Student.belongsToMany(Role, { through: RoleStudent });
 Role.belongsToMany(Student, { through: RoleStudent });
-
-await sequelize.sync({ force: true });
 
 console.log("All models were synchronized successfully.");
 
