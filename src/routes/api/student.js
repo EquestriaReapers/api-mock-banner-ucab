@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { Student, Career, Role, StudentCareer } = require('../../models/models');
+const { Student, Career, Role, StudentCareer, RoleStudent } = require('../../models/models');
 
 router.get('/', async (req, res) => {
     try {
@@ -11,27 +11,25 @@ router.get('/', async (req, res) => {
             offset: pageAsNumber * sizeAsNumber,
             include: [
                 {
-                    model: Career,
-                    through: { attributes: [] }
+                    model: StudentCareer,
+                    include : [
+                        {
+                            model: Career,
+                        }
+                    ]
+                    
                 },
                 {
-                    model: Role,
-                    through: { attributes: [] } 
+                    model: RoleStudent,
+                    include : [
+                        {
+                            model: Role,
+                        }
+                    ]
                 }
             ]
         }
-        const students = await Student.findAll({
-            include: [
-                {
-                    model: Career,
-                    through: { attributes: [] }
-                },
-                {
-                    model: Role,
-                    through: { attributes: [] } 
-                }
-            ]
-        });
+        const students = await Student.findAll(options);
         res.status(200).json(students);
     } catch (error) {
         console.log(error);
@@ -45,12 +43,21 @@ router.get('/ci/:documentNumber', async (req, res) => {
         const student = await Student.findByPk(documentNumber, {
             include: [
                 {
-                    model: Career,
-                    through: { attributes: [] }
+                    model: StudentCareer,
+                    include : [
+                        {
+                            model: Career,
+                        }
+                    ]
+                    
                 },
                 {
-                    model: Role,
-                    through: { attributes: [] } 
+                    model: RoleStudent,
+                    include : [
+                        {
+                            model: Role,
+                        }
+                    ]
                 }
             ]
         });
@@ -70,12 +77,21 @@ router.get('/email/:email' , async (req, res) => {
             },
             include: [
                 {
-                    model: Career,
-                    through: { attributes: [] }
+                    model: StudentCareer,
+                    include : [
+                        {
+                            model: Career,
+                        }
+                    ]
+                    
                 },
                 {
-                    model: Role,
-                    through: { attributes: [] } 
+                    model: RoleStudent,
+                    include : [
+                        {
+                            model: Role,
+                        }
+                    ]
                 }
             ]
         });

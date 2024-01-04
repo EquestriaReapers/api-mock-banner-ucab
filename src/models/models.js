@@ -114,8 +114,16 @@ const StudentCareer = sequelize.define('StudentCareer', {
 
 Student.belongsToMany(Career, { through: StudentCareer });
 Career.belongsToMany(Student, { through: StudentCareer });
+Student.hasMany(StudentCareer);
+StudentCareer.belongsTo(Student);
+Career.hasMany(StudentCareer);
+StudentCareer.belongsTo(Career);
 Student.belongsToMany(Role, { through: RoleStudent });
 Role.belongsToMany(Student, { through: RoleStudent });
+Student.hasMany(RoleStudent);
+RoleStudent.belongsTo(Student);
+Role.hasMany(RoleStudent);
+RoleStudent.belongsTo(Role);
 
 console.log("All models were synchronized successfully.");
 
